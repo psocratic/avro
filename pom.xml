@@ -31,7 +31,7 @@
 
   <groupId>org.apache.avro</groupId>
   <artifactId>avro-toplevel</artifactId>
-  <version>1.8.2</version>
+  <version>1.8.2-PATCH2157</version>
   <packaging>pom</packaging>
 
   <name>Apache Avro Toplevel</name>
@@ -53,16 +53,24 @@
     <antrun-plugin.version>1.7</antrun-plugin.version>
     <enforcer-plugin.version>1.3.1</enforcer-plugin.version>
     <rat.version>0.9</rat.version>
+
+    <s3-wagon-private.version>1.3.0</s3-wagon-private.version>
   </properties>
 
   <modules>
     <module>lang/java</module>
   </modules>
 
+  <!--
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/avro/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/avro/trunk</developerConnection>
     <url>http://svn.apache.org/viewvc/avro/trunk</url>
+  </scm>
+  -->
+  <scm>
+    <connection>scm:git:git@github.com:psocratic/psocratic.git</connection>
+    <developerConnection>scm:git:git@github.com:psocratic/psocratic.git</developerConnection>
   </scm>
 
   <issueManagement>
@@ -97,6 +105,13 @@
   </mailingLists>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>s3-wagon-private</groupId>
+        <artifactId>s3-wagon-private</artifactId>
+        <version>${s3-wagon-private.version}</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -125,6 +140,19 @@
     <profile>
       <id>dist</id>
       <!-- Profile for generating all maven artifacts and documentation. -->
+      <distributionManagement>
+        <repository>
+          <id>psocratic-prod-release-repo</id>
+          <name>Psocratic Production Release Repository</name>
+          <url>s3p://artifact.psocratic.com/release</url>
+        </repository>
+        <snapshotRepository>
+          <id>psocratic-prod-snapshot-repo</id>
+          <name>Psocratic Production Snapshot Repository</name>
+          <url>s3p://artifact.psocratic.com/snapshot</url>
+        </snapshotRepository>
+      </distributionManagement>
+
       <build>
         <plugins>
           <plugin>

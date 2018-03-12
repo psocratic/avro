@@ -1562,6 +1562,7 @@ Token AnyIdentifier():
    t = <STRING> |
    t = <PROTOCOL> |
    t = <RECORD> |
+   t = <SCHEMA> |
    t = <THROWS> |
    t = <TRUE> |
    t = <UNION> |
